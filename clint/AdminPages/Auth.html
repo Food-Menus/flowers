@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        /* General Styling */
+        :root {
+            --primary-color: #a9072a;
+            --secondary-color: #f76c8a;
+            --text-color: #333;
+            --light-bg: #FCF4F4;
+            --white: #fff;
+            --border-color: #EEE;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Scheherazade', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            direction: rtl;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+    /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .full-width-container {
+            width: 100%;
+            margin: 0;
+            background-color: var(--white);
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px var(--shadow-light);
+            padding-bottom: 10px;
+            position: relative;
+            z-index: 10;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .navbar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            height: 100%;
+        } 
+
+        .logo-img {
+            width: auto;
+            height: 160px;
+            object-fit: contain;
+        }
+
+        /* Login Form Styles */
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .login-container h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .login-container p {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 24px;
+            font-family: 'Scheherazade', serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .login-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            font-size: 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            font-family: 'Scheherazade', serif;
+        }
+
+        .login-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 25px 0;
+            margin-top: auto;
+        }
+
+        .footer p {
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 28px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 30px 20px;
+                padding: 20px;
+            }
+            
+            .login-container h2 {
+                font-size: 24px;
+            }
+            
+            .login-container p {
+                font-size: 20px;
+            }
+            
+            .form-group label,
+            .form-group input,
+            .login-btn {
+                font-size: 20px;
+            }
+            
+            .logo-img {
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px 15px;
+                padding: 15px;
+            }
+            
+            .login-container h2 {
+                font-size: 22px;
+            }
+            
+            .login-container p {
+                font-size: 18px;
+            }
+            
+            .form-group label,
+            .form-group input,
+            .login-btn {
+                font-size: 18px;
+            }
+            
+            .form-group input {
+                padding: 12px;
+            }
+            
+            .login-btn {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./../../static/images/logo.png"  alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+        <!--#############################  Header  ###################################-->
+            <header class="header">
+                <div class="navbar-top">
+                    <div class="logo">
+                        <img src="./../../static/images/logo.png" alt="Red Flowers Logo" class="logo-img">
+                    </div>
+                </div>
+            </header>
+        <!--##########################################################################-->
+
+                    <main class="main-content">
+                        <div class="login-container">
+                            <h2>تسجيل الدخول</h2>
+                            <p>مرحباً بك في لوحة تحكم Red Flowers</p>
+                            
+                            <form id="loginForm">
+                                <div class="form-group">
+                                    <label for="username">اسم المستخدم</label>
+                                    <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="password">كلمة المرور</label>
+                                    <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                                </div>
+                                
+                                <button type="submit" class="login-btn">
+                                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                                </button>
+                            </form>
+                        </div>
+                    </main>
+
+        <!--#############################  Footer  ###################################-->
+            <footer class="footer" >
+                    <p style="font-size: 25px;">Copyright © 2025 Techno Science All rights reserved </p>
+            </footer>
+        <!--##########################################################################-->
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+<!--#############################  script  ###################################-->
+<script>
+    //**********************************************************************************************//
+    //**********************************************************************************************//
+    //**  git data  **// 
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/1TAtjWXk-RrSU-omvv4N-a8dgmcsy7-SD7UvJwp5M9O8/gviz/tq?tqx=out:json';
+        const targetObject = {};
+    
+        fetch(googleSheetUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // الحصول على البيانات كنص
+            })
+            .then(data => {
+                // تحويل النص إلى JSON
+                const jsonData = JSON.parse(data.substr(47).slice(0, -2)); // إزالة بعض البيانات الزائدة
+                const rows = jsonData.table.rows;
+    
+                // إنشاء كائن لتخزين البيانات
+                const result = {};
+    
+                // ربط البيانات من الصفوف
+                rows.forEach(row => {
+                    const key = row.c[0] ? row.c[0].v : null; // أول خلية في العمود الأول
+                    const value = row.c[1] ? row.c[1].v : null; // أول خلية في العمود الثاني
+                    if (key && value) {
+                        result[key] = value; // ربط المفتاح بالقيمة
+                    }
+                });
+    
+    
+                for (const key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        targetObject[key] = result[key];
+                    }
+                }
+
+                const loginForm = document.getElementById('loginForm');
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+
+                loginForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const username = usernameInput.value;
+                    const password = passwordInput.value;
+
+                    // التحقق من صحة بيانات الدخول
+                    if (targetObject[username] && targetObject[username].toString() === password) {
+                        // تخزين بيانات الدخول في Local Storage
+                        localStorage.setItem('username', username);
+                        localStorage.setItem('password', password);
+
+                        // تحويل المستخدم إلى صفحة الملف الشخصي
+                        window.location.href = './profile.html';
+                        swal("تم التسجيل", "تم تسجيل الدخول بنجاح.", "success");
+                } else {
+                    swal("خطأ في تسجيل الدخول", 'اسم المستخدم أو كلمة المرور غير صحيحة', "error");
+                    }
+                });
+
+
+            })
+            .catch(error => {
+                console.error('Error fetching data from Google Sheets:', error);
+            });
+    //**********************************************************************************************//
+    //**********************************************************************************************//
+    //**  loadingScreen  **//
+
+        // إخفاء شاشة التحميل بعد تحميل الصفحة
+        window.addEventListener('load', function() {
+            document.getElementById('loadingScreen').style.display = 'none';
+        });
+        // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
+        setTimeout(function() {
+            document.getElementById('loadingScreen').style.display = 'none';
+        }, 5000); // 5 ثواني كحد أقصى
+
+</script>
+<script>
+            document.addEventListener('DOMContentLoaded', () => {
+    const username = localStorage.getItem('username');
+    if (username) {
+        window.location.href = './profile.html';
+    } else {
+        document.getElementById('username').textContent = username;
+    }
+    });
+</script>
+<script src="./../../server/Componsnts.js"></script>
+<!--##########################################################################-->
+
+</body>
+
+</html>

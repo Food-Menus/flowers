@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        body { font-family: 'Scheherazade', serif; direction: rtl; text-align: right; margin: 20px; background-color: #ffe8e8; }
+            /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 900px; margin: 0 auto; }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; font-size: 46px; }
+        label { display: block; margin-bottom: 8px;font-size: 26px; font-weight: bold; color: #555; }
+        input[type="text"], input[type="number"], textarea, input[type="file"] {font-size: 26px; width: calc(100% - 22px); padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { resize: vertical; min-height: 80px; }
+        button { background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 26px; width: 100%; }
+        button:hover { background-color: #45a049; }
+        .message { margin-top: 20px; padding: 10px; border-radius: 4px; text-align: center; display: none; }
+        .message.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    </style>
+</head>
+
+<body>
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./../../static/images/logo.png" alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+
+
+    <div class="container">
+        <h1>إضافة منتج جديد</h1>
+        <form id="addProductForm">
+            
+            <!-- تم إزالة حقل معرف المنتج (productID) هنا، سيتم إنشاؤه تلقائيًا -->
+
+            <label for="productName">اسم المنتج :</label>
+            <input type="text" id="productName" name="product_Name" pattern="^[\u0600-\u06FF\s]+$"  title="يُسمح فقط بإدخال الحروف العربية" required>
+
+            <label for="productDetails">تفاصيل المنتج :</label>
+            <textarea id="productDetails" name="product_Details" required></textarea>
+
+            <label for="productPrice">سعر المنتج :</label>
+            <input type="number" id="productPrice" name="product_prise" step="0.01" required>
+
+            <label for="productType" >نوع المنتج :</label>
+                <select  style="font-size: 25px; padding: 5px;" id="productType" name="product_type" required>
+                    <option value="all">جميع الباقات</option>
+                    <option value="باقات الورد الطبيعي">باقات الورد الطبيعي</option>
+                    <option value="ورود المناسبات الخاصة">ورود المناسبات الخاصة</option>
+                    <option value="نباتات الزينة">نباتات الزينة</option>
+                    <option value="هدايا مع الورد">هدايا مع الورد</option>
+                    <option value="شراء وردة واحدة">شراء وردة واحدة</option>
+                    <option value="صناديق الورد الفاخرة">صناديق الورد الفاخرة</option>
+                </select>
+
+            <label for="productImage1">صورة المنتج الاساسية :</label>
+            <input type="file" id="productImage1" accept="image/*">
+
+            <label for="productImage2">صورة المنتج التوضيحية :</label>
+            <input type="file" id="productImage2" accept="image/*">
+
+            <button type="submit">إضافة المنتج</button>
+            <div id="message" class="message"></div>
+        </form>
+    </div>
+
+
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+<!--##########################################################################-->
+<!--#############################  script  ###################################-->
+    <script>
+        // هذا هو رابط الـ Web App Deployment الخاص بك
+        // تأكد من تحديثه بعد نشر الكود الجديد في Apps Script
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwkPq8r64kK6Z2YQg0FczxqZSoyun-hNz_VZ4-5eldRUHDFin2__qIFJTmG884CnXM/exec'; 
+
+        document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const messageDiv = document.getElementById('message');
+
+            messageDiv.textContent = 'جاري إضافة المنتج...';
+            messageDiv.className = 'message';
+            messageDiv.style.display = 'block';
+
+            // إضافة حقل 'action' لتحديد نوع العملية (add)
+            formData.append('action', 'add');
+
+            // **** التعديل هنا: توليد productID تلقائيًا كأرقام فقط ****
+            const productID = Date.now(); // توليد معرف فريد باستخدام timestamp (أرقام فقط)
+            formData.append('product_ID', productID); // إضافة الـ ID للـ formData
+
+            const toBase64 = file => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+            });
+
+            try {
+                const image1File = document.getElementById('productImage1').files[0];
+                const image2File = document.getElementById('productImage2').files[0];
+
+                if (image1File) {
+                    formData.append('product_Imge_1', await toBase64(image1File));
+                }
+                if (image2File) {
+                    formData.append('product_Imge_2', await toBase64(image2File));
+                }
+
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    messageDiv.textContent = result.message;
+                    messageDiv.classList.add('success');
+                    form.reset();
+                } else {
+                    messageDiv.textContent = 'خطأ: ' + result.message;
+                    messageDiv.classList.add('error');
+                }
+            } catch (error) {
+                messageDiv.textContent = 'حدث خطأ غير متوقع: ' + error.message;
+                messageDiv.classList.add('error');
+            }
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = './Auth.html';
+        } else {
+            // لا يوجد عنصر 'username' هنا، لذلك هذا السطر قد يسبب خطأ إذا لم يكن موجودًا
+            // document.getElementById('username').textContent = username; 
+            // إذا كان هناك عنصر لعرض اسم المستخدم، تأكد من وجوده في الـ HTML
+        }
+        });
+    </script>
+    <script src="./../../server/Componsnts.js"></script>
+<!--##########################################################################-->
+<!--##########################################################################-->
+</body>
+
+</html>

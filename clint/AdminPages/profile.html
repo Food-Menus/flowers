@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        /* General Styling */
+        :root {
+            --primary-color: #a9072a;
+            --secondary-color: #f76c8a;
+            --text-color: #333;
+            --light-bg: #FCF4F4;
+            --white: #ffffff;
+            --border-color: #EEE;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #ffd1db); /* برتقالي فاتح إلى برتقالي مشرق */
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            margin: 0;
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+    /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .full-width-container {
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 28px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px var(--shadow-light);
+            padding-bottom: 10px;
+            position: relative;
+            z-index: 10;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .navbar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 33px;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+            align-self: flex-start;
+            margin-top: 15px;
+        }
+
+        .sidebar-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            height: 100%;
+        } 
+
+        .logo-img {
+            width: auto;
+            height: 160px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin: 0;
+            padding-left: 15px;
+        }
+
+        .main-nav {
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            margin-top: auto;
+        }
+
+        .main-nav .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            top: 5px;
+            left: 5%;
+            z-index: 100;
+        }
+
+        .main-nav ul.nav-links {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .main-nav ul.nav-links li {
+            margin: 0 20px;
+        }
+
+        .main-nav ul.nav-links li a {
+            font-weight: bold;
+            font-size: 28px;
+            padding: 8px 0;
+            position: relative;
+            display: block;
+        }
+
+        .main-nav ul.nav-links li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .main-nav ul.nav-links li a:hover::after,
+        .main-nav ul.nav-links li a.active::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 0;
+            min-height: calc(100vh - 180px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100%;
+            background-color: var(--white);
+            padding: 20px;
+            box-shadow: -5px 0 15px var(--shadow-light);
+            z-index: 1000;
+            transition: right 0.5s ease-in-out;
+            overflow-y: auto;
+            padding-top: 100px;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            font-size: 28px;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: var(--light-bg);
+            color: var(--secondary-color);
+        }
+
+        /* Admin Profile Section */
+        .admin-profile {
+            padding: 40px 5%;
+            text-align: center;
+        }
+
+        .admin-profile h2 {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .admin-profile h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .profile-info {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px var(--shadow-light);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: right;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--secondary-color);
+            margin-left: 30px;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .profile-role {
+            font-size: 24px;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .profile-details {
+            font-size: 24px;
+            line-height: 1.8;
+            text-align: right;
+        }
+
+        .profile-details p {
+            margin-bottom: 15px;
+        }
+
+        .profile-details strong {
+            color: var(--primary-color);
+        }
+
+        /* Admin Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            justify-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-item {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px var(--shadow-light);
+            overflow: hidden;
+            text-align: center;
+            padding: 25px 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .dashboard-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-icon {
+            font-size: 50px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .dashboard-desc {
+            font-size: 24px;
+            color: var(--text-color);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 28px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-nav .menu-toggle {
+                font-size: 22px;
+            }
+            .main-nav ul.nav-links li a {
+                font-size: 22px;
+            }
+            .logo h1 {
+                font-size: 18px;
+            }
+            .sidebar-toggle {
+                font-size: 18px;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-pic {
+                margin-left: 0;
+                margin-bottom: 20px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                width: 260px;
+                right: -260px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-info {
+                padding: 20px 15px;
+            }
+            
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .profile-name {
+                font-size: 24px;
+            }
+            
+            .profile-role, .profile-details {
+                font-size: 20px;
+            }
+            
+            .dashboard-icon {
+                font-size: 40px;
+            }
+            
+            .dashboard-title {
+                font-size: 24px;
+            }
+            
+            .dashboard-desc {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./../../static/images/logo.png" alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+
+
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+        <!--#############################  Header  ###################################-->
+            <header class="header">
+                <div class="navbar-top">
+                    <div class="logo">
+                        <img src="./../../static/images/logo.png" alt="Red Flowers Logo" class="logo-img">
+                    </div>
+                </div>
+            </header>
+        <!--##########################################################################-->
+
+                <main class="main-content">
+                    <section class="admin-profile">
+                        <h2>لوحة تحكم الأدمن</h2>
+                        
+                        <div class="dashboard-grid">
+                            <a href="./Addproduct.html" class="dashboard-item">
+                                <div class="dashboard-icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <h3 class="dashboard-title">إضافة منتج جديد</h3>
+                                <p class="dashboard-desc">إضافة منتجات جديدة إلى المتجر</p>
+                            </a>
+                            
+                            <a href="./EditProduct.html" class="dashboard-item">
+                                <div class="dashboard-icon">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <h3 class="dashboard-title">تعديل المنتجات</h3>
+                                <p class="dashboard-desc">تعديل أو حذف المنتجات الحالية</p>
+                            </a>
+                            
+                            <a href="./DisplayOrder.html" class="dashboard-item">
+                                <div class="dashboard-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <h3 class="dashboard-title">إدارة الطلبات</h3>
+                                <p class="dashboard-desc">عرض وتحديث طلبات العملاء</p>
+                            </a>
+                            
+                            <a href="./DisplayFeedback.html" class="dashboard-item">
+                                <div class="dashboard-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3 class="dashboard-title">اراء المستخدمين</h3>
+                                <p class="dashboard-desc">عرض و تحديث فيدباك العملاء</p>
+                            </a>
+                            
+                            <a href="./Dashboard.html" class="dashboard-item">
+                                <div class="dashboard-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3 class="dashboard-title">التقارير</h3>
+                                <p class="dashboard-desc">عرض تقارير وتحصائيات الموصع</p>
+                            </a>
+                            
+                            <a href="https://docs.google.com/spreadsheets/d/1TAtjWXk-RrSU-omvv4N-a8dgmcsy7-SD7UvJwp5M9O8/edit?usp=drive_link" class="dashboard-item">
+                                <div class="dashboard-icon">
+                                    <i class="fas fa-table"></i>
+                                </div>
+                                <h3 class="dashboard-title">بيانات تسجيل الدخول</h3>
+                                <p class="dashboard-desc">تعديل باسورد ويوزر نيم المديرين </p>
+                            </a>
+                        </div>     
+                                    <button id="logoutButton" class="delete-btn"  style="margin-top: 10px;">  تسجيل الخروج  </button><br>
+
+                    </section>
+
+                </main>
+
+        <!--#############################  Footer  ###################################-->
+        <div id="Footer"></div> 
+        <!--##########################################################################-->
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+
+
+
+<!--#############################  script  ###################################-->
+    <script>
+        // إخفاء loader بعد تحميل الصفحة
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            preloader.classList.add('fade-out');
+            
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+        
+        // تسجيل الخروج
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', () => {
+
+            localStorage.removeItem('username');
+            localStorage.removeItem('password');
+            window.location.href = './../../index.html';
+            swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
+
+        });
+        
+        // يمكنك إضافة المزيد من الوظائف هنا حسب الحاجة
+    </script>
+    <script>
+                document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = './Auth.html';
+        } else {
+            document.getElementById('username').textContent = username;
+        }
+        });
+    </script>
+    <script src="./../../server/Componsnts.js"></script>
+<!--##########################################################################-->
+
+</body>
+
+</html>

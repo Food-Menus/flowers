@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #a9072a;
+            --secondary-color: #f76c8a;
+            --text-color: #333;
+            --light-bg: #FCF4F4;
+            --white: #fff;
+            --border-color: #EEE;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Scheherazade', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            direction: rtl;
+        }
+
+        /* تنسيقات البطاقات */
+        .orders-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 32px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        .section-subheader {
+            text-align: center;
+            color: var(--white);
+            font-size: 24px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .order-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .customer-name {
+            font-size: 26px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .order-date {
+            font-size: 18px;
+            color: #777;
+        }
+
+        .order-detail {
+            font-size: 22px;
+            margin-bottom: 12px;
+            line-height: 1.7;
+            display: flex;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: var(--primary-color);
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        .order-items {
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .order-item {
+            padding: 5px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .status-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .status-label {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .status-preparing {
+            color: #ff9800;
+        }
+
+        .status-ready {
+            color: #2196f3;
+        }
+
+        .status-delivered {
+            color: #4caf50;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 22px;
+            font-family: 'Scheherazade', serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .refresh-btn:hover {
+            background-color: #8a0623;
+        }
+
+        .sheet-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .sheet-btn:hover {
+            background-color: #218838;
+        }
+
+        .scroll-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .scroll-btn:hover {
+            background-color: #138496;
+        }
+
+        /* Floating Cart */
+        .floating-cart {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff5722;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .floating-cart:hover {
+            background-color: #e64a19;
+        }
+
+        .floating-cart ion-icon {
+            font-size: 28px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ffeb3b;
+            color: #333;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                font-size: 28px;
+            }
+            
+            .section-subheader {
+                font-size: 20px;
+            }
+            
+            .customer-name {
+                font-size: 22px;
+            }
+            
+            .order-detail {
+                font-size: 20px;
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                margin-bottom: 5px;
+            }
+            
+            .action-btn {
+                font-size: 18px;
+                padding: 10px 15px;
+            }
+            
+            .order-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./../../static/images/logo.png" alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+            <main class="main-content">
+                <div class="orders-container">
+                    <h1 class="section-header">طلبات العملاء</h1>
+                    <p class="section-subheader">أحرص على سرية بيانات العملاء</p>
+                    
+                    <div class="action-buttons">
+                        <button id="refreshBtn" class="action-btn sheet-btn">
+                            <i class="fas fa-sync-alt"></i> تحديث الطلبات
+                        </button>
+                        <button id="scrollBtn" class="action-btn scroll-btn">
+                            <i class="fas fa-arrow-down"></i> أحدث الطلبات
+                        </button>
+                    </div>
+                    
+                    <div class="orders-grid" id="ordersContainer">
+                        <!-- سيتم ملء هذا القسم بالبيانات من Google Sheets -->
+                        <p style="text-align:center; font-size:22px;">جاري تحميل بيانات الطلبات...</p>
+                    </div>
+                </div>
+            </main>
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+
+
+<!--#############################  script  ###################################-->
+    <script src="./server/Componsnts.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // إخفاء شاشة التحميل
+        window.addEventListener('load', function() {
+            document.querySelector('.preloader').classList.add('fade-out');
+            setTimeout(() => {
+                document.querySelector('.preloader').style.display = 'none';
+            }, 500);
+            
+            // جلب البيانات عند تحميل الصفحة
+            fetchOrdersData();
+        });
+
+        // عناصر DOM
+        const ordersContainer = document.getElementById('ordersContainer');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const sheetBtn = document.getElementById('sheetBtn');
+        const scrollBtn = document.getElementById('scrollBtn');
+        
+        // روابط البيانات   
+        const sheetID = '17Dbj2EDuybESq6DlE3eeyPmF03wxyU5fdX9AS4vFZzI';
+        const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/edit?usp=sharing`;
+        const dataURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
+        // جلب بيانات الطلبات من Google Sheets
+        function fetchOrdersData() {
+            ordersContainer.innerHTML = '<p style="text-align:center; font-size:22px;">جاري تحميل البيانات...</p>';
+            
+            fetch(dataURL)
+                .then(response => response.text())
+                .then(data => {
+                    const json = JSON.parse(data.substring(47).slice(0, -2));
+                    const tableData = json.table.rows;
+                    
+                    if(tableData.length === 0) {
+                        ordersContainer.innerHTML = '<p style="text-align:center; font-size:22px;">لا توجد طلبات متاحة حالياً</p>';
+                        return;
+                    }
+                    
+                    ordersContainer.innerHTML = '';
+                    
+                    tableData.forEach((row, index) => {
+                        const name = row.c[0]?.v || "بدون اسم";
+                        const number = row.c[1]?.v || "غير متاح";
+                        const address = row.c[2]?.v || "غير متاح";
+                        const notes = row.c[3]?.v || "لا توجد ملاحظات";
+                        const amount = row.c[4]?.v || "غير محدد";
+                        const orderItems = row.c[5]?.v || "لا توجد تفاصيل للطلب";
+                        const date = row.c[6]?.f || "غير معروف";
+                        
+                        const cardId = `order-${index}`;
+                        const preparingId = `preparing-${index}`;
+                        const readyId = `ready-${index}`;
+                        const deliveredId = `delivered-${index}`;
+                        
+                        const card = document.createElement('div');
+                        card.className = 'order-card';
+                        card.innerHTML = `
+                            <div class="order-header">
+                                <span class="customer-name">${name}</span>
+                                <span class="order-date">طلب العميل</span>
+                            </div>
+                            
+                            <div class="order-detail">
+                                <span class="detail-label">رقم الهاتف:</span>
+                                <span class="detail-value">${number}</span>
+                            </div>
+                            
+                            <div class="order-detail">
+                                <span class="detail-label">العنوان:</span>
+                                <span class="detail-value">${address}</span>
+                            </div>
+                            
+                            <div class="order-detail">
+                                <span class="detail-label">المبلغ:</span>
+                                <span class="detail-value">${amount} جنيه</span>
+                            </div>
+                            
+                            <div class="order-detail">
+                                <span class="detail-label">ملاحظات:</span>
+                                <span class="detail-value">${notes}</span>
+                            </div>
+                            
+                            <div class="order-items">
+                                <h3 style="margin-bottom:10px; color:var(--primary-color);">تفاصيل الطلب:</h3>
+                                ${formatOrderItems(orderItems)}
+                            </div>
+                            
+                            <div class="order-actions">
+                                <div class="status-checkbox">
+                                    <input type="checkbox" id="${preparingId}" name="preparing-${index}">
+                                    <label for="${preparingId}" class="status-label status-preparing">تحضير</label>
+                                </div>
+                                
+                                <div class="status-checkbox">
+                                    <input type="checkbox" id="${readyId}" name="ready-${index}">
+                                    <label for="${readyId}" class="status-label status-ready">تجهيز</label>
+                                </div>
+                                
+                                <div class="status-checkbox">
+                                    <input type="checkbox" id="${deliveredId}" name="delivered-${index}">
+                                    <label for="${deliveredId}" class="status-label status-delivered">توصيل</label>
+                                </div>
+                            </div>
+                        `;
+                        
+                        ordersContainer.appendChild(card);
+                        
+                        // استعادة حالة المربعات من localStorage
+                        const preparingCheckbox = document.getElementById(preparingId);
+                        const readyCheckbox = document.getElementById(readyId);
+                        const deliveredCheckbox = document.getElementById(deliveredId);
+                        
+                        const storedPreparing = localStorage.getItem(preparingId);
+                        const storedReady = localStorage.getItem(readyId);
+                        const storedDelivered = localStorage.getItem(deliveredId);
+                        
+                        if (storedPreparing === 'true') preparingCheckbox.checked = true;
+                        if (storedReady === 'true') readyCheckbox.checked = true;
+                        if (storedDelivered === 'true') deliveredCheckbox.checked = true;
+                        
+                        // إضافة مستمعين للأحداث
+                        preparingCheckbox.addEventListener('change', () => {
+                            localStorage.setItem(preparingId, preparingCheckbox.checked);
+                        });
+                        
+                        readyCheckbox.addEventListener('change', () => {
+                            localStorage.setItem(readyId, readyCheckbox.checked);
+                        });
+                        
+                        deliveredCheckbox.addEventListener('change', () => {
+                            localStorage.setItem(deliveredId, deliveredCheckbox.checked);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    ordersContainer.innerHTML = `
+                        <p style="text-align:center; font-size:22px; color:var(--primary-color);">
+                            حدث خطأ في جلب البيانات. يرجى المحاولة لاحقاً.
+                        </p>
+                    `;
+                });
+        }
+
+        // تنسيق عناصر الطلب لعرضها بشكل منظم
+        function formatOrderItems(items) {
+            if (!items) return "لا توجد تفاصيل للطلب";
+            
+            // تقسيم النص حسب الأسطر الجديدة
+            const itemsArray = items.split('\n');
+            
+            // إنشاء عناصر منظمة لكل بند
+            let formattedItems = '';
+            itemsArray.forEach(item => {
+                if (item.trim() !== '') {
+                    formattedItems += `<div class="order-item">${item}</div>`;
+                }
+            });
+            
+            return formattedItems || "لا توجد تفاصيل للطلب";
+        }
+
+        // أحداث الأزرار
+        refreshBtn.addEventListener('click', fetchOrdersData);
+        
+        sheetBtn.addEventListener('click', () => {
+            window.open(sheetURL, '_blank');
+        });
+        
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // التحقق من صلاحية المستخدم
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './AuthPage.html';
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = './Auth.html';
+        } else {
+            document.getElementById('username').textContent = username;
+        }
+        });
+    </script>
+<!--##########################################################################-->
+
+</body>
+
+</html>

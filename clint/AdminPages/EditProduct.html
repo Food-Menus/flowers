@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Scheherazade', serif;
+            background: linear-gradient(135deg, #ffffff, #ffd1db); /* برتقالي فاتح إلى برتقالي مشرق */
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            margin: 0;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+            /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto; }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; font-size: 46px;}
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555;font-size: 26px; }
+        select, input[type="text"], input[type="number"], textarea {font-size: 26px; width: calc(100% - 22px); padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { resize: vertical; min-height: 80px; }
+        .button-group { display: flex; justify-content: space-between; gap: 10px; }
+        button { padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 26px; flex-grow: 1; }
+        button.save { background-color: #007bff; color: white; }
+        button.save:hover { background-color: #0056b3; }
+        button.delete { background-color: #dc3545; color: white; }
+        button.delete:hover { background-color: #c82333; }
+        .message { margin-top: 20px; padding: 10px; border-radius: 4px; text-align: center; display: none; }
+        .message.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        #productDetailsContainer { border-top: 1px solid #eee; margin-top: 30px; padding-top: 20px; }
+    </style>
+</head>
+
+<body>
+
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./../../static/images/logo.png"  alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+    <br><br>
+
+            <div class="container">
+                <h1>تعديل أو حذف المنتجات</h1>
+
+                <label for="productTypeSelect">اختر نوع المنتج:</label>
+                <select id="productTypeSelect">
+                    <option value="">-- اختر نوعاً --</option>
+                </select>
+
+                <label for="productNameSelect">اختر اسم المنتج:</label>
+                <select id="productNameSelect" disabled>
+                    <option value="">-- اختر منتجاً --</option>
+                </select>
+
+                <div id="productDetailsContainer" style="display: none;">
+                    <h2>تفاصيل المنتج</h2>
+                    <form id="editProductForm">
+                        <label for="editProductID">معرف المنتج (Product ID):</label>
+                        <input type="text" id="editProductID" name="product_ID" readonly>
+
+                        <label for="editProductName">اسم المنتج (Product Name):</label>
+                        <input type="text" id="editProductName" name="product_Name" required>
+
+                        <label for="editProductDetails">تفاصيل المنتج (Product Details):</label>
+                        <textarea id="editProductDetails" name="product_Details" required></textarea>
+
+                        <label for="editProductPrice">سعر المنتج (Product Price):</label>
+                        <input type="number" id="editProductPrice" name="product_prise" step="0.01" required>
+
+                        <label for="editProductType">نوع المنتج (Product Type):</label>
+                        <input type="text" id="editProductType" name="product_type" required>
+
+                        <div class="button-group">
+                            <button type="button" class="delete" id="deleteProductBtn">حذف المنتج</button>
+                            <button type="submit" class="save">حفظ التعديلات</button>
+                        </div>
+                        <div id="message" class="message"></div>
+                    </form>
+                </div>
+            </div>
+
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+
+<!--#############################  script  ###################################-->
+    <script>
+        // هذا هو رابط الـ Web App Deployment الخاص بك
+        // تأكد من تحديثه بعد نشر الكود الجديد في Apps Script
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwkPq8r64kK6Z2YQg0FczxqZSoyun-hNz_VZ4-5eldRUHDFin2__qIFJTmG884CnXM/exec'; 
+        let allProducts = []; 
+
+        const productTypeSelect = document.getElementById('productTypeSelect');
+        const productNameSelect = document.getElementById('productNameSelect');
+        const productDetailsContainer = document.getElementById('productDetailsContainer');
+        const editProductForm = document.getElementById('editProductForm');
+        const deleteProductBtn = document.getElementById('deleteProductBtn');
+        const messageDiv = document.getElementById('message');
+
+        // جلب جميع المنتجات عند تحميل الصفحة باستخدام GET
+        async function fetchProducts() {
+            try {
+                const response = await fetch(scriptURL); // doGet هتستجيب هنا
+                allProducts = await response.json();
+                populateProductTypes(allProducts);
+            } catch (error) {
+                messageDiv.textContent = 'حدث خطأ أثناء جلب المنتجات: ' + error.message;
+                messageDiv.classList.add('error');
+                messageDiv.style.display = 'block';
+            }
+        }
+
+        function populateProductTypes(products) {
+            const productTypes = [...new Set(products.map(p => p.product_type))];
+            productTypeSelect.innerHTML = '<option value="">-- اختر نوعاً --</option>';
+            productTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                productTypeSelect.appendChild(option);
+            });
+            productNameSelect.innerHTML = '<option value="">-- اختر منتجاً --</option>';
+            productNameSelect.disabled = true;
+            productDetailsContainer.style.display = 'none';
+        }
+
+        productTypeSelect.addEventListener('change', () => {
+            const selectedType = productTypeSelect.value;
+            productNameSelect.innerHTML = '<option value="">-- اختر منتجاً --</option>';
+            productDetailsContainer.style.display = 'none';
+            if (selectedType) {
+                const filteredProducts = allProducts.filter(p => p.product_type === selectedType);
+                filteredProducts.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.product_ID;
+                    option.textContent = product.product_Name;
+                    productNameSelect.appendChild(option);
+                });
+                productNameSelect.disabled = false;
+            } else {
+                productNameSelect.disabled = true;
+            }
+        });
+
+        productNameSelect.addEventListener('change', () => {
+            const selectedProductID = productNameSelect.value;
+            if (selectedProductID) {
+                const product = allProducts.find(p => p.product_ID == selectedProductID);
+                if (product) {
+                    document.getElementById('editProductID').value = product.product_ID;
+                    document.getElementById('editProductName').value = product.product_Name;
+                    document.getElementById('editProductDetails').value = product.product_Details;
+                    document.getElementById('editProductPrice').value = product.product_prise;
+                    document.getElementById('editProductType').value = product.product_type;
+                    productDetailsContainer.style.display = 'block';
+                }
+            } else {
+                productDetailsContainer.style.display = 'none';
+            }
+        });
+
+        // حفظ التعديلات باستخدام POST
+        editProductForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            formData.append('action', 'update'); // تحديد العملية كـ 'update'
+
+            const productID = document.getElementById('editProductID').value;
+            formData.append('product_ID', productID); // تأكد من إرسال الـ ID
+
+            messageDiv.textContent = 'جاري حفظ التعديلات...';
+            messageDiv.className = 'message';
+            messageDiv.style.display = 'block';
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    messageDiv.textContent = result.message;
+                    messageDiv.classList.add('success');
+                    await fetchProducts(); // تحديث البيانات بعد التعديل
+                    productDetailsContainer.style.display = 'none';
+                } else {
+                    messageDiv.textContent = 'خطأ: ' + result.message;
+                    messageDiv.classList.add('error');
+                }
+            } catch (error) {
+                messageDiv.textContent = 'حدث خطأ غير متوقع: ' + error.message;
+                messageDiv.classList.add('error');
+            }
+        });
+
+        // حذف المنتج باستخدام POST
+        deleteProductBtn.addEventListener('click', async () => {
+            const productID = document.getElementById('editProductID').value;
+            if (!confirm('هل أنت متأكد أنك تريد حذف هذا المنتج؟')) {
+                return;
+            }
+
+            messageDiv.textContent = 'جاري حذف المنتج...';
+            messageDiv.className = 'message';
+            messageDiv.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('action', 'delete'); // تحديد العملية كـ 'delete'
+            formData.append('product_ID', productID); // إرسال الـ ID لحذف المنتج
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    messageDiv.textContent = result.message;
+                    messageDiv.classList.add('success');
+                    await fetchProducts(); // تحديث البيانات بعد الحذف
+                    productDetailsContainer.style.display = 'none';
+                } else {
+                    messageDiv.textContent = 'خطأ: ' + result.message;
+                    messageDiv.classList.add('error');
+                }
+            } catch (error) {
+                messageDiv.textContent = 'حدث خطأ غير متوقع: ' + error.message;
+                messageDiv.classList.add('error');
+            }
+        });
+
+        fetchProducts();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = './Auth.html';
+        } else {
+            document.getElementById('username').textContent = username;
+        }
+        });
+    </script>
+    <script src="https://apis.google.com/js/api.js"></script> 
+    <script src="./../../server/Componsnts.js"></script>
+<!--##########################################################################-->
+
+</body>
+
+</html>

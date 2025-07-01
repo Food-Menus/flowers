@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        /* General Styling */
+        :root {
+            --primary-color: #a9072a;
+            --secondary-color: #f76c8a;
+            --text-color: #333;
+            --light-bg: #FCF4F4;
+            --white: #fff;
+            --border-color: #EEE;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Scheherazade', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            direction: rtl;
+            overflow-x: hidden;
+        }
+         .download-apk-btn {
+            display: inline-flex; /* لجعل الأيقونة والنص في سطر واحد */
+            align-items: center; /* لمحاذاة العناصر عموديًا */
+            justify-content: center; /* لتوسيط المحتوى */
+            background-color: #4CAF50; /* لون أخضر جذاب */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none; /* إزالة خط تحت النص */
+            font-size: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+            border: none; /* إزالة أي حدود افتراضية */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* إضافة ظل بسيط */
+        }
+
+        .download-apk-btn:hover {
+            background-color: #45a049; /* لون أغمق عند التحويم */
+            transform: translateY(-2px); /* تأثير رفع بسيط */
+        }
+
+        .download-apk-btn i {
+            margin-left: 10px; /* مسافة بين الأيقونة والنص */
+            font-size: 20px; /* حجم الأيقونة */
+        }
+
+        /* استجابة للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .download-apk-btn {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            .download-apk-btn i {
+                font-size: 18px;
+                margin-left: 8px;
+            }
+        }
+
+                /* --- QR Modal --- */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .qr-content img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .close-qr {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            /* تم تكبير حجم الزر */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 25px;
+            /* تم تكبير الخط (20+5) */
+            margin-top: 15px;
+        }
+
+        .qr-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 14px 21px;
+            /* تم تكبير حجم الزر */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            /* تم تكبير الخط (18+5) */
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qr-btn i {
+            font-size: 25px;
+            /* تم تكبير الأيقونة (20+5) */
+        }
+
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+        }
+
+        .full-width-container {
+            width: 100%;
+            margin: 0;
+            background-color: var(--white);
+            overflow: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 28px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px var(--shadow-light);
+            padding-bottom: 10px;
+            position: relative;
+            z-index: 10;
+            height: 220px;
+            /* زيادة ارتفاع الهيدر */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .navbar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+            align-self: flex-start;
+            /* محاذاة زر القائمة الجانبية لأعلى */
+            margin-top: 15px;
+        }
+
+        .sidebar-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            height: 100%;
+            /* لجعل اللوجو يأخذ الارتفاع كاملًا */
+        }
+
+        .logo-img {
+            width: auto;
+            /* تغيير من عرض ثابت إلى تلقائي */
+            height: 160px;
+            /* زيادة ارتفاع الصورة */
+            object-fit: contain;
+            /* للحفاظ على نسب الصورة */
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin: 0;
+            padding-left: 15px;
+            /* مسافة بين الصورة والنص */
+        }
+
+        .main-nav {
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            margin-top: auto;
+            /* لدفع القائمة لأسفل */
+        }
+
+        .main-nav .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            top: 5px;
+            left: 5%;
+            z-index: 100;
+        }
+
+        .main-nav ul.nav-links {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .main-nav ul.nav-links li {
+            margin: 0 20px;
+        }
+
+        .main-nav ul.nav-links li a {
+            font-weight: bold;
+            font-size: 28px;
+            padding: 8px 0;
+            position: relative;
+            display: block;
+        }
+
+        .main-nav ul.nav-links li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .main-nav ul.nav-links li a:hover::after,
+        .main-nav ul.nav-links li a.active::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 0;
+            min-height: calc(100vh - 180px);
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100%;
+            background-color: var(--white);
+            padding: 20px;
+            box-shadow: -5px 0 15px var(--shadow-light);
+            z-index: 1000;
+            transition: right 0.5s ease-in-out;
+            overflow-y: auto;
+            padding-top: 100px;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            font-size: 1rem;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: var(--light-bg);
+            color: var(--secondary-color);
+        }
+
+        .promo-box {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .promo-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .promo-box p {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .promo-box button {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* About Us Section */
+        .about-us {
+            flex: 1;
+            padding: 40px 5%;
+            max-width: 100%;
+            margin-right: 0;
+            transition: margin-right 0.5s ease-in-out;
+        }
+
+        .sidebar.open+.about-us {
+            margin-right: 250px;
+        }
+
+        .about-us h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .about-us h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 28px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .social-links a:hover:nth-child(1) {
+            color: #1877f2;
+            /* لون فيسبوك */
+        }
+
+        .social-links a:hover:nth-child(2) {
+            color: #e4405f;
+            /* لون انستجرام */
+        }
+
+        .social-links a:hover:nth-child(3) {
+            color: #1da1f2;
+            /* لون تويتر */
+        }
+
+        .main-nav ul.nav-links li a {
+            font-weight: bold;
+            font-size: 28px;
+            padding: 8px 0;
+            position: relative;
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 260px;
+                right: -260px;
+            }
+
+            .sidebar.open+.about-us {
+                margin-right: 220px;
+            }
+
+            .about-us h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                margin-right: 30%;
+            }
+
+            .navbar-top {
+                padding: 10px 2%;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .about-us {
+                padding: 20px 2%;
+            }
+
+            .about-logo {
+                width: 120px;
+                margin-bottom: 20px;
+            }
+
+            .about-content p {
+                font-size: 0.95rem;
+            }
+
+            .sidebar {
+                width: 260px;
+                right: -260px;
+            }
+
+            .sidebar.open+.about-us {
+                margin-right: 180px;
+            }
+        }
+                /* Media query for even smaller screens (e.g., iPhone 5/SE) to ensure readability */
+        @media (max-width: 480px) {
+            body {
+                font-size: 17px;
+            }
+
+            .floating-cart {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .floating-cart ion-icon {
+                font-size: 26px;
+            }
+
+            .cart-count {
+                width: 22px;
+                height: 22px;
+                font-size: 15px;
+            }
+
+            .notification-text {
+                font-size: 16px;
+            }
+
+            .floating-cart.expanded {
+                width: 170px;
+            }
+
+            .floating-cart.expanded ion-icon {
+                transform: translateX(-50px);
+            }
+
+            @keyframes expand {
+                0% {
+                    width: 50px;
+                }
+
+                100% {
+                    width: 170px;
+                }
+            }
+
+            @keyframes bounce {
+
+                0%,
+                100% {
+                    transform: translateX(-50px) scale(1);
+                }
+
+                50% {
+                    transform: translateX(-50px) scale(1.2);
+                }
+            }
+
+            .add-to-cart-btn {
+                font-size: 1.15rem;
+                padding: 10px 15px;
+            }
+
+            .header {
+                height: 160px;
+            }
+
+            .sidebar-toggle {
+                font-size: 28px;
+            }
+
+            .logo-img {
+                height: 120px;
+            }
+
+            .logo h1 {
+                font-size: 1.15rem;
+            }
+
+            .main-nav ul.nav-links li {
+                margin: 0 10px;
+            }
+
+            .main-nav ul.nav-links li a {
+                font-size: 1.1rem;
+            }
+
+            .sidebar {
+                width: 280px;
+                right: -280px;
+                padding-top: 80px;
+            }
+
+            .sidebar h2 {
+                font-size: 1.5rem;
+            }
+
+            .sidebar ul li a {
+                font-size: 1.1rem;
+                padding: 10px 12px;
+            }
+
+            .promo-box {
+                padding: 15px;
+            }
+
+            .promo-box a {
+                font-size: 1.3rem;
+            }
+
+            .promo-box button {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+
+            .hero-section {
+                height: 300px;
+            }
+
+            .slider-text h2 {
+                font-size: 1.25rem;
+            }
+
+            .slider-text p {
+                font-size: 0.95rem;
+            }
+
+            .product-suggestions h2 {
+                font-size: 1.5rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .product-item img {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 10 / 10.5;
+            }
+
+            .product-item h3 {
+                font-size: 1.1rem;
+                min-height: 2.2em;
+            }
+
+            .product-item p {
+                font-size: 0.9rem;
+                min-height: 1.6em;
+            }
+
+            .product-item span {
+                font-size: 1.1rem;
+            }
+
+            .footer {
+                padding: 20px 0;
+            }
+
+            .footer p {
+                font-size: 0.95rem;
+            }
+
+            .social-links a {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./../../static/images/logo.png" alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+
+
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+        <!--#########################  Header  Sidebar  ##############################-->
+        <div id="Header" HeaderPath0="./../../static/images/logo.png" HeaderPath1="./../../index.html" HeaderPath2="./products.html" HeaderPath3="./about.html" HeaderPath4="./order.html"></div>
+        <div id="Sidebar" SidebarPath1="./order.html" SidebarPath2="./location.html" SidebarPath3="./../AdminPages/Auth.html" SidebarPath4="./feedback" HeaderPath5="./../../static/Red Flowers.apk"></div>
+        <!--##########################################################################-->
+
+                <main class="main-content about-page">
+                    <section class="about-us">
+                        <h2>عن Red Flowers</h2>
+                        <div class="about-content">
+                            <p>في "Red Flowers"، نؤمن بأن كل وردة تحكي قصة. منذ تأسيسنا، ونحن نلتزم بتقديم أجود أنواع الزهور
+                                وأكثرها نضارة، لنساعدك على التعبير عن مشاعرك في كل مناسبة.</p>
+                            <p>نحن فخورون بتقديم مجموعة متنوعة من الباقات المصممة بعناية، من الكلاسيكية إلى العصرية، بالإضافة
+                                إلى تشكيلة فريدة من نباتات الزينة والهدايا المنسقة. هدفنا هو إضفاء البهجة والجمال على حياتك
+                                وحياة أحبائك.</p>
+                            <p>دع "Red Flowers" تكون وجهتك الأولى لكل ما يتعلق بالزهور، حيث الجودة تلتقي بالإبداع لتقديم تجربة
+                                لا تُنسى.</p>
+                        </div>
+                    </section>
+                </main>
+
+                <div id="qrModal" class="qr-modal">
+                    <div class="qr-content">
+                        <h2>أمسح الكود</h2>
+                            <img src="./../../static/images/BarcodeFlowers.png" alt="QR Code">
+                        <p>يمكنك مسح الكود لمشاركة الموقع</p>
+                        <button class="close-qr" onclick="closeQRModal()">إغلاق</button>
+                    </div>
+                </div>
+
+        <!--#############################  Footer  ###################################-->
+        <div id="Footer"></div>
+        <!--##########################################################################-->
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+
+
+
+<!--#############################  script  ###################################-->
+    <script src="./../../server/Componsnts.js"></script>
+    <script>
+        function showQRModal() {
+            document.getElementById('qrModal').style.display = 'flex';
+        }
+
+        // دالة لإغلاق نافذة الـ QR Code
+        function closeQRModal() {
+            document.getElementById('qrModal').style.display = 'none';
+        }
+    </script>
+<!--##########################################################################-->
+
+</body>
+
+</html>

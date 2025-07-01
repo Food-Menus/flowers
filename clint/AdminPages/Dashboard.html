@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #a9072a;
+            --secondary-color: #f76c8a;
+            --text-color: #333;
+            --light-bg: #FCF4F4;
+            --white: #fff;
+            --border-color: #EEE;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Scheherazade', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            direction: rtl;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 32px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 22px;
+            color: var(--text-color);
+        }
+
+        .chart-container {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-header {
+            font-size: 26px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 22px;
+            font-family: 'Scheherazade', serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .refresh-btn:hover {
+            background-color: #8a0623;
+        }
+
+        /* Floating Cart */
+        .floating-cart {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff5722;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .floating-cart:hover {
+            background-color: #e64a19;
+        }
+
+        .floating-cart ion-icon {
+            font-size: 28px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ffeb3b;
+            color: #333;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Feedback Styles */
+        .feedback-list {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .feedback-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+
+        .feedback-item:hover {
+            background-color: var(--light-bg);
+            transform: translateX(-5px);
+        }
+
+        .feedback-name {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .feedback-text {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .feedback-rating {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                font-size: 28px;
+            }
+            
+            .stat-value {
+                font-size: 30px;
+            }
+            
+            .stat-label {
+                font-size: 20px;
+            }
+            
+            .chart-header {
+                font-size: 22px;
+            }
+            
+            .chart-wrapper {
+                height: 300px;
+            }
+            
+            .action-btn {
+                font-size: 18px;
+                padding: 10px 15px;
+            }
+        }
+
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-logo {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!--############################  loading  ###################################-->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="./static/images/logo.png" alt="Red Flowers Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p>جاري تحميل الإحصائيات...</p>
+        </div>
+    </div>
+<!--##########################################################################-->
+
+
+<!------------------------------------------------------------------------------>
+<div class="full-width-container"><!-------------------------------------------->
+
+    <main class="main-content">
+        <div class="dashboard-container">
+            <h1 class="section-header">لوحة التحكم والإحصائيات</h1>
+
+            
+            <div class="stats-grid" id="statsContainer">
+                <!-- سيتم ملء هذا القسم بالإحصائيات -->
+            </div>
+            
+            <div class="chart-container">
+                <h2 class="chart-header">أكثر المنتجات طلباً</h2>
+                <div class="chart-wrapper">
+                    <canvas id="productsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h2 class="chart-header">تقييمات العملاء</h2>
+                <div class="chart-wrapper">
+                    <canvas id="feedbackChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h2 class="chart-header">حالات الطلبات</h2>
+                <div class="chart-wrapper">
+                    <canvas id="ordersChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container" id="customerFeedbackContainer">
+                <h2 class="chart-header">أحدث آراء العملاء</h2>
+                <div class="feedback-list" id="feedbackList">
+                    <!-- سيتم ملء هذا القسم بآراء العملاء -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div><!------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------>
+
+
+
+<!--#############################  script  ###################################-->
+    <script src="./server/Componsnts.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
+    <script>
+        // إخفاء شاشة التحميل
+        window.addEventListener('load', function() {
+            document.querySelector('.preloader').classList.add('fade-out');
+            setTimeout(() => {
+                document.querySelector('.preloader').style.display = 'none';
+            }, 500);
+            
+            // جلب البيانات عند تحميل الصفحة
+            fetchAllData();
+        });
+
+        // روابط جداول البيانات
+        const ordersSheetID = '17Dbj2EDuybESq6DlE3eeyPmF03wxyU5fdX9AS4vFZzI';
+        const feedbackSheetID = '1wkkWLVx_WbW_QmDjWE5H-3wc8WMRS_boGU37wDQSrgQ';
+        const productsSheetID = '1CK5wjrpnDTkriEfs8XRo5Sgnq07HHKsyO1pGU_tQguU';
+        
+        const ordersURL = `https://docs.google.com/spreadsheets/d/${ordersSheetID}/gviz/tq?tqx=out:json`;
+        const feedbackURL = `https://docs.google.com/spreadsheets/d/${feedbackSheetID}/gviz/tq?tqx=out:json`;
+        const productsURL = `https://docs.google.com/spreadsheets/d/${productsSheetID}/gviz/tq?tqx=out:json`;
+        
+        // العناصر
+        const statsContainer = document.getElementById('statsContainer');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const feedbackList = document.getElementById('feedbackList');
+        
+        // المتغيرات العالمية للبيانات
+        let ordersData = [];
+        let feedbackData = [];
+        let productsData = [];
+        
+        // جلب جميع البيانات
+        function fetchAllData() {
+            statsContainer.innerHTML = '<p style="text-align:center; font-size:22px;">جاري تحميل البيانات...</p>';
+            feedbackList.innerHTML = '<p style="text-align:center; font-size:18px;">جاري تحميل آراء العملاء...</p>';
+            
+            Promise.all([
+                fetchData(ordersURL),
+                fetchData(feedbackURL),
+                fetchData(productsURL)
+            ])
+            .then(([orders, feedback, products]) => {
+                ordersData = orders;
+                feedbackData = feedback;
+                productsData = products;
+                
+                updateStatistics();
+                renderCharts();
+                displayCustomerFeedback();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statsContainer.innerHTML = `
+                    <p style="text-align:center; font-size:22px; color:var(--primary-color);">
+                        حدث خطأ في جلب البيانات. يرجى المحاولة لاحقاً.
+                    </p>
+                `;
+                feedbackList.innerHTML = `
+                    <p style="text-align:center; font-size:18px; color:var(--primary-color);">
+                        حدث خطأ في جلب آراء العملاء.
+                    </p>
+                `;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ في جلب البيانات',
+                    text: 'حدث خطأ في جلب البيانات. يرجى التحقق من اتصال الإنترنت والمحاولة لاحقاً.',
+                    confirmButtonText: 'حسناً'
+                });
+            });
+        }
+        
+        // دالة مساعدة لجلب البيانات من Google Sheets
+        async function fetchData(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.text();
+                const json = JSON.parse(data.substring(47).slice(0, -2));
+                
+                // تحقق من وجود بيانات
+                if (!json.table || !json.table.rows) {
+                    console.warn('No rows found in the sheet data:', json);
+                    return [];
+                }
+                
+                return json.table.rows;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+        
+        // تحديث الإحصائيات
+        function updateStatistics() {
+            // حساب الإحصائيات
+            const totalOrders = ordersData.length;
+            const totalFeedback = feedbackData.length;
+            const totalProducts = productsData.length;
+            
+            // حساب متوسط التقييمات (تحويل الحالات إلى قيم رقمية)
+            const ratings = feedbackData.map(row => {
+                const rating = row.c[3]?.v;
+                if (rating === 'سعيد بالخدمة') return 5;
+                if (rating === 'راضي عن الخدمة') return 4;
+                if (rating === 'خدمة مقبولة') return 3;
+                if (rating === 'غير راض عن الخدمة') return 2;
+                return 3; // القيمة الافتراضية للحالات غير المعروفة
+            });
+
+            const averageRating = ratings.length > 0 
+                ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)
+                : '0.0';
+            
+            // حساب الطلبات الجديدة (آخر 7 أيام)
+            const recentOrders = ordersData.filter(row => {
+                const dateStr = row.c[6]?.f; // تاريخ الطلب
+                if (!dateStr) return false;
+                const orderDate = new Date(dateStr);
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                return orderDate > weekAgo;
+            }).length;
+            
+            // حساب العملاء السعداء (تقييم 4 أو 5)
+            const happyCustomers = ratings.filter(r => r >= 4).length;
+            
+            // عرض الإحصائيات
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="stat-value">${totalOrders}</div>
+                    <div class="stat-label">إجمالي الطلبات</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-comment-alt"></i></div>
+                    <div class="stat-value">${totalFeedback}</div>
+                    <div class="stat-label">عدد التقييمات</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-value">${averageRating}/5</div>
+                    <div class="stat-label">متوسط التقييم</div>
+                </div>
+                
+                
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-smile"></i></div>
+                    <div class="stat-value">${happyCustomers}</div>
+                    <div class="stat-label">عملاء سعداء</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-box-open"></i></div>
+                    <div class="stat-value">${totalProducts}</div>
+                    <div class="stat-label">عدد المنتجات</div>
+                </div>
+            `;
+        }
+        
+        // عرض الرسوم البيانية
+        function renderCharts() {
+            // تحليل بيانات المنتجات الأكثر طلباً
+            const productOrders = {};
+            ordersData.forEach(row => {
+                const items = row.c[5]?.v; // تفاصيل الطلب
+                if (items) {
+                    items.split('\n').forEach(item => {
+                        const productName = item.trim().split(' - ')[0];
+                        if (productName) {
+                            productOrders[productName] = (productOrders[productName] || 0) + 1;
+                        }
+                    });
+                }
+            });
+            
+            // تحضير بيانات الرسم البياني للمنتجات
+            const sortedProducts = Object.entries(productOrders)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            
+            const productsChart = new Chart(
+                document.getElementById('productsChart'),
+                {
+                    type: 'bar',
+                    data: {
+                        labels: sortedProducts.map(p => p[0]),
+                        datasets: [{
+                            label: 'عدد الطلبات',
+                            data: sortedProducts.map(p => p[1]),
+                            backgroundColor: 'rgba(169, 7, 42, 0.7)',
+                            borderColor: 'rgba(169, 7, 42, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'عدد الطلبات'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                rtl: true
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // تحليل بيانات التقييمات
+            const ratingsCount = {
+                'سعيد بالخدمة': 0,
+                'راضي عن الخدمة': 0,
+                'خدمة مقبولة': 0,
+                'غير راض عن الخدمة': 0
+            };
+
+            feedbackData.forEach(row => {
+                try {
+                    // افتراض أن حالة التقييم في العمود الرابع (index 3)
+                    const condition = row.c[3]?.v;
+                    
+                    if (condition) {
+                        if (ratingsCount[condition] !== undefined) {
+                            ratingsCount[condition]++;
+                        } else {
+                            // إذا وجدنا حالة غير متوقعة نضيفها تلقائياً
+                            ratingsCount[condition] = 1;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error processing feedback row:', row, error);
+                }
+            });
+
+            // تصفية الحالات التي لها عدد أكبر من الصفر
+            const validRatings = Object.entries(ratingsCount).filter(([_, count]) => count > 0);
+            
+            // رسم بياني للتقييمات
+            const feedbackChart = new Chart(
+                document.getElementById('feedbackChart'),
+                {
+                    type: 'pie',
+                    data: {
+                        labels: validRatings.map(r => r[0]),
+                        datasets: [{
+                            data: validRatings.map(r => r[1]),
+                            backgroundColor: [
+                                'rgba(76, 175, 80, 0.7)',   // سعيد بالخدمة - أخضر
+                                'rgba(139, 195, 74, 0.7)',  // راضي عن الخدمة - أخضر فاتح
+                                'rgba(255, 235, 59, 0.7)',  // خدمة مقبولة - أصفر
+                                'rgba(244, 67, 54, 0.7)',    // غير راض عن الخدمة - أحمر
+                                'rgba(255, 152, 0, 0.7)'     // أي حالات أخرى - برتقالي
+                            ],
+                            borderColor: [
+                                'rgba(76, 175, 80, 1)',
+                                'rgba(139, 195, 74, 1)',
+                                'rgba(255, 235, 59, 1)',
+                                'rgba(244, 67, 54, 1)',
+                                'rgba(255, 152, 0, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                rtl: true
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // تحليل بيانات حالات الطلبات (من مربعات الاختيار)
+            let preparingCount = 0;
+            let readyCount = 0;
+            let deliveredCount = 0;
+            
+            // هذا مثال - في الواقع تحتاج إلى تتبع حالات الطلبات من مصدر البيانات
+            // هنا نستخدم افتراضات لأغراض العرض التوضيحي
+            ordersData.forEach((row, index) => {
+                const preparing = localStorage.getItem(`preparing-${index}`) === 'true';
+                const ready = localStorage.getItem(`ready-${index}`) === 'true';
+                const delivered = localStorage.getItem(`delivered-${index}`) === 'true';
+                
+                if (delivered) deliveredCount++;
+                else if (ready) readyCount++;
+                else if (preparing) preparingCount++;
+            });
+            
+            const total = preparingCount + readyCount + deliveredCount;
+            if (total > 0) {
+                preparingCount = Math.round((preparingCount / total) * 100);
+                readyCount = Math.round((readyCount / total) * 100);
+                deliveredCount = Math.round((deliveredCount / total) * 100);
+            }
+            
+            // رسم بياني لحالات الطلبات
+            const ordersChart = new Chart(
+                document.getElementById('ordersChart'),
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['قيد التحضير', 'جاهز للتوصيل', 'تم التوصيل'],
+                        datasets: [{
+                            data: [preparingCount, readyCount, deliveredCount],
+                            backgroundColor: [
+                                'rgba(255, 152, 0, 0.7)',    // قيد التحضير - برتقالي
+                                'rgba(33, 150, 243, 0.7)',   // جاهز - أزرق
+                                'rgba(76, 175, 80, 0.7)'     // تم التوصيل - أخضر
+                            ],
+                            borderColor: [
+                                'rgba(255, 152, 0, 1)',
+                                'rgba(33, 150, 243, 1)',
+                                'rgba(76, 175, 80, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                rtl: true
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.raw + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+        
+        // عرض آراء العملاء كنصوص
+        function displayCustomerFeedback() {
+            if (!feedbackData || feedbackData.length === 0) {
+                feedbackList.innerHTML = '<p style="text-align:center; font-size:18px; color:var(--primary-color);">لا توجد آراء عملاء متاحة</p>';
+                return;
+            }
+
+            // عرض آخر 10 تقييمات
+            const latestFeedback = feedbackData.slice(0, 10);
+            
+            feedbackList.innerHTML = latestFeedback.map(row => `
+                <div class="feedback-item">
+                    <h3 class="feedback-name">${row.c[0]?.v || 'عميل'}</h3>
+                    <p class="feedback-text">${row.c[1]?.v || 'لا يوجد تعليق'}</p>
+                    <div class="feedback-rating" style="color: ${getRatingColor(row.c[3]?.v)};">
+                        ${row.c[3]?.v || 'لا يوجد تقييم'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // دالة مساعدة للحصول على لون التقييم
+        function getRatingColor(rating) {
+            switch(rating) {
+                case 'سعيد بالخدمة': return '#4CAF50';
+                case 'راضي عن الخدمة': return '#8BC34A';
+                case 'خدمة مقبولة': return '#FFC107';
+                case 'غير راض عن الخدمة': return '#F44336';
+                default: return '#9E9E9E';
+            }
+        }
+        
+        // أحداث الأزرار
+        refreshBtn.addEventListener('click', fetchAllData);
+
+        // التحقق من صلاحية المستخدم
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './AuthPage.html';
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = './Auth.html';
+        } else {
+            document.getElementById('username').textContent = username;
+        }
+        });
+    </script>
+<!--##########################################################################-->
+
+</body>
+
+</html>
