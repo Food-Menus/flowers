@@ -17,10 +17,10 @@ function loadComponents() {
 
                 <div class="navbar-top">
                     <button class="sidebar-toggle" aria-label="Toggle sidebar">
-                        <i class="fas fa-bars"></i>
+                        <i class="fas fa-bars" style="font-size:20px"></i>
                     </button>
                     <div class="logo">
-                        <img src="${HeaderPath0}" alt="شعار المتجر" class="logo-img">
+                    <h1 style="font-size:50px">Flowers</h1>
                     </div>
                 </div>
                 <nav class="main-nav">
@@ -29,8 +29,8 @@ function loadComponents() {
                     </button>
                     <ul class="nav-links">
                         <li><a href="${HeaderPath1}" class="active">الرئيسية</a></li>
-                        <li><a href="${HeaderPath2}">باقاتنا</a></li>
-                        <li><a href="${HeaderPath3}">من نحن</a></li>
+                        <li><a href="${HeaderPath2}" class="active">باقاتنا</a></li>
+                        <li><a href="${HeaderPath3}" class="active">من نحن</a></li>
                     </ul>
                 </nav>
             </header>
@@ -50,7 +50,7 @@ function loadComponents() {
         
         SidebarElement.innerHTML = `
             <aside class="sidebar">
-                <h2>Red Flowers</h2>
+                <h2> Flowers</h2>
                 <ul>
                     <li><a href="${SidebarPath1}">   متابعة الطلب  </a></li>
                     <li><a href="${SidebarPath2}">   موقع المتجر  </a></li>
@@ -75,15 +75,14 @@ function loadComponents() {
             FooterElement.innerHTML = `
                 <footer class="footer">
                     <p>Copyright © 2025 Techno Science All rights reserved </p>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61552612523046&mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/red_flowers.01208901095"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
+
                 </footer>
             `;
         }
-        
+                    // <div class="social-links">
+                    //     <a href="https://www.facebook.com/profile.php?id=61552612523046&mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a>
+                    //     <a href="https://www.instagram.com/red_flowers.01208901095"><i class="fab fa-instagram"></i></a>
+                    // </div>        
 /*####################################################################################################*/
 
 }
@@ -94,10 +93,10 @@ function loadComponents() {
 /*###############################  load Products suggestions  ########################################*/
 
     function loadProducts() {
-        const sheetID = '1CK5wjrpnDTkriEfs8XRo5Sgnq07HHKsyO1pGU_tQguU';
+        const sheetID = '14j86qoovImj8yCBSu_P0MdZ-nXSx35ek6k_PxZS95cA';
         const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
-        // دالة تحديث عداد السلة
+        // دالة تحديث عداد السلة 
         function updateCartCounter() {
             const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
             const cartCountElement = document.querySelector('.cart-count');
@@ -265,7 +264,7 @@ function loadComponents() {
 /*###################################  load Data Products  ###########################################*/
 
     function loadDataProducts() {
-        const sheetID = '1CK5wjrpnDTkriEfs8XRo5Sgnq07HHKsyO1pGU_tQguU';
+        const sheetID = '14j86qoovImj8yCBSu_P0MdZ-nXSx35ek6k_PxZS95cA';
         const baseURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
         async function fetchProducts() {

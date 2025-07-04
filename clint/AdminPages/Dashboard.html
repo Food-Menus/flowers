@@ -8,9 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
     <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-    <title>Red Flowers - للورود والهدايا الفاخرة</title>
+    <title>Flowers </title>
     <link rel="icon" href="./../../static/images/logo1.png" type="image/x-icon">
-    <style>
+    <link rel="stylesheet" href="./../../static/style.css">
+    <!-- <style>
         :root {
             --primary-color: #a9072a;
             --secondary-color: #f76c8a;
@@ -301,7 +302,7 @@
             50% { transform: scale(1.05); opacity: 1; }
             100% { transform: scale(0.95); opacity: 0.8; }
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -381,11 +382,11 @@
         });
 
         // روابط جداول البيانات
-        const ordersSheetID = '17Dbj2EDuybESq6DlE3eeyPmF03wxyU5fdX9AS4vFZzI';
-        const feedbackSheetID = '1wkkWLVx_WbW_QmDjWE5H-3wc8WMRS_boGU37wDQSrgQ';
-        const productsSheetID = '1CK5wjrpnDTkriEfs8XRo5Sgnq07HHKsyO1pGU_tQguU';
+        const ordersSheetID = '1X2zupDCGvLNHcvcK-jY4TL4G13dPvHYUKF_uWRQdtvk';
+        const feedbackSheetID = '1lq3TlL_48FjJeb_-tH3C7oWByYsMslUSxudSN7e01H4';
+        const productsSheetID = '14j86qoovImj8yCBSu_P0MdZ-nXSx35ek6k_PxZS95cA';
         
-        const ordersURL = `https://docs.google.com/spreadsheets/d/${ordersSheetID}/gviz/tq?tqx=out:json`;
+        const ordersURL = `https://docs.google.com/spreadsheets/d/${ordersSheetID}/gviz/tq?tqx=out:json`; 
         const feedbackURL = `https://docs.google.com/spreadsheets/d/${feedbackSheetID}/gviz/tq?tqx=out:json`;
         const productsURL = `https://docs.google.com/spreadsheets/d/${productsSheetID}/gviz/tq?tqx=out:json`;
         
